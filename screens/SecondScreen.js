@@ -1,6 +1,7 @@
 import React from "react";
 import { Animated, Easing } from "react-native";
 import sharedStyle from '../shared/style';
+import { Spinner } from '../components';
 
 const imageUri = 'https://media.scufgaming.com/pub/media/catalog/product/cache/image/1500x1200/e9c3970ab036de70892d86c6d221abfe/b/o/botg-spinner.png';
 
@@ -24,6 +25,7 @@ export default class SecondScreen extends React.Component {
   render() {
     return (
       <Animated.View style={[ sharedStyle.container, ]} >
+        <Spinner />
         <Animated.Image
           source={{ uri: imageUri }}
           style={{
