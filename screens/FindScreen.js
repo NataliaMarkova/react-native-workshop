@@ -1,20 +1,29 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View } from "react-native";
 import { Button } from 'react-native';
 import { ActivityIndicator } from 'react-native';
-import fetchMovies from '../api/Fetch';
+import { fetchMovies } from '../api';
+import { MovieList } from '../components';
+import sharedStyle from '../shared/style';
 
 export default class FindScreen extends React.Component {
 
     state = {
         hideSpinner: true,
-        hideButton: false
+        hideButton: false,
+        data: null
     }
 
     getContent() {
         this.setState({ hideSpinner: false,  hideButton: true });
-        fetchMovies().then(result => {
-            this.setState({ hideSpinner: true });
+        fetchMovies()
+        .then(result => {
+            console.log(result);
+            this.setState({ hideSpinner: true, data: result });
+        })
+        .catch(error => {
+            console.error(error);
+            this.setState({ hideSpinner: true, hideButton: fasle });
         });
     }
 
@@ -44,10 +53,12 @@ export default class FindScreen extends React.Component {
     }
 
     render() {
+        const { data } = this.state;
         return (
-        <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        <View  style={[ sharedStyle.container, ]} >
            {this._renderButton()}
            {this._renderSpinner()}
+           <MovieList data={data} ></MovieList>
         </View>      
         );
     }

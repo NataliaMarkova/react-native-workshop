@@ -1,12 +1,43 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { Animated, Easing } from "react-native";
+import sharedStyle from '../shared/style';
+
+const imageUri = 'https://media.scufgaming.com/pub/media/catalog/product/cache/image/1500x1200/e9c3970ab036de70892d86c6d221abfe/b/o/botg-spinner.png';
 
 export default class SecondScreen extends React.Component {
-    render() {
-        return (
-        <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-            <Text>Second Screen</Text>
-        </View>      
-        );
-    }
+
+  rotate = new Animated.Value(0);
+
+  componentDidMount() {
+    Animated.loop(
+      Animated.timing(this.rotate, {
+        toValue: 360,//\\
+        duration: 1500,
+        easing: Easing.linear(),
+      }),
+      {
+        iterations: 10
+      }
+    ).start()
+  }
+
+  render() {
+    return (
+      <Animated.View style={[ sharedStyle.container, ]} >
+        <Animated.Image
+          source={{ uri: imageUri }}
+          style={{
+            height: 100,
+            width: 100,
+            transform: [{ 
+              rotate: this.rotate.interpolate({
+                inputRange: [0, 360],
+                outputRange: ['0deg', '360deg'],
+              }) 
+            }],
+          }}
+        />
+      </Animated.View>
+    );
+  }
 }
