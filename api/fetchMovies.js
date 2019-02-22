@@ -2,12 +2,22 @@ import axios from 'axios';
 import { AsyncStorage } from 'react-native';
 
 const apikey = '8acfc648';
-const endpoint = 'http://www.omdbapi.com/?apikey=' + apikey + '&s=*apple*&page=1';
+const endpoint = 'http://www.omdbapi.com/?apikey=' + apikey + '&s=*apple*';
 const fakeTimeout = 500;
 
-const fetchMovies = async () => {
+const fetchMovies = async (page, forceRefresh) => {
+
+  var currentEndpoint = endpoint;
+  if (page) {
+    currentEndpoint += '&page=' + page;
+  }
+
+  if (forceRefresh) {
+    await AsyncStorage.clear(); 
+  }
+
   try {
-    const storedResult = await AsyncStorage.getItem(endpoint);
+    const storedResult = await AsyncStorage.getItem(currentEndpoint);
     
     if (storedResult !== null) {
       return new Promise( (resolve) => {
@@ -20,10 +30,10 @@ const fetchMovies = async () => {
     console.error('failed to retrieve stored data', error);
   }
 
-  const response = await axios(endpoint);
+  const response = await axios(currentEndpoint);
 
   try {
-    await AsyncStorage.setItem(endpoint, JSON.stringify(response.data));
+    await AsyncStorage.setItem(currentEndpoint, JSON.stringify(response.data));
   } catch (error) {
     console.error(error);
   }

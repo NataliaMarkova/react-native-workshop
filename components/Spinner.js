@@ -24,8 +24,8 @@ class Spinner extends Component<Props, State> {
       <Animated.Image
         source={ require('../images/spinner.jpeg') }
           style={{
-            height: 100,
-            width: 100,
+            height: 70,
+            width: 70,
             backgroundColor: 'transparent',
             transform: [{
               rotate: this.rotate.interpolate({

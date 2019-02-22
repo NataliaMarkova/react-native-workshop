@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Movie from "./Movie";
-import { View } from "react-native";
-import { ScrollView } from 'react-native-gesture-handler';
+import { View, FlatList, RefreshControl } from "react-native";
+import sharedStyle from '../shared/style';
 
 type Props = {
 };
@@ -9,19 +9,45 @@ type State = {};
 
 class MovieList extends Component<Props, State> {
 
-    renderMovie = (item, index) => (
-        <Movie key={index} {...item} />
+    renderMovie = ({ item }, index) => (
+        <Movie key={item.imdbID} {...item} />
     );
+
+    _keyExtractor = (item, index) => item.imdbID;
+
+    _onEndReached = () => {
+      this.props.loadMore();
+    };
+
+    _onRefresh = () => {
+      this.props.refresh();
+    }
 
     render()  {
         const { data } = this.props;
         if (!data || !data.length) return null;
         return (
-            <ScrollView contentContainerStyle = {{flexGrow: 1}} >
-                {data.map(this.renderMovie)}
-            </ScrollView>
+          <View style={{flex: 1}}>
+            <FlatList
+                data={data}
+                scrollable
+                keyExtractor={this._keyExtractor}
+                renderItem={this.renderMovie}
+                onEndReached={this._onEndReached}
+                refreshing={false}
+                refreshControl={
+                    <RefreshControl
+                      colors={['transparent']}
+                      tintColor='transparent'
+                      progressBackgroundColor='transparent'
+                      refreshing={false}
+                      onRefresh={this._onRefresh}
+                    />
+                  }
+            />
+        </View>
         );
-    }
+    };
 
 }
 
