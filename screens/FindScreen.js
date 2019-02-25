@@ -8,6 +8,10 @@ import Moment from 'moment';
 
 export default class FindScreen extends React.Component {
 
+  static navigationOptions = {
+    headerTitle: 'Movies',
+  };
+
   state = {
     hideSpinner: true,
     hideButton: false,
@@ -75,7 +79,7 @@ export default class FindScreen extends React.Component {
       return null;
     } else {
       return (
-        <Text style={sharedStyle.lastUpdated}>
+        <Text style={sharedStyle.importantText}>
           Last updated: {this._formatDate(lastUpdated)}
         </Text>
       )
@@ -90,12 +94,11 @@ export default class FindScreen extends React.Component {
   render() {
     const { data } = this.state;
     return (
-      <SafeAreaView style={{ backgroundColor: 'white', borderWidth: 1, borderColor: 'red', flex: 1, 
-          justifyContent: 'center', alignItems: 'center' }}>
+      <SafeAreaView style={sharedStyle.container}>
         {this._renderButton()}
         {this._renderSpinner()}
         {this._renderLastUpdated()}
-        <MovieList data={data} loadMore={this.loadMore} refresh={this.refresh}></MovieList>
+        <MovieList data={data} loadMore={this.loadMore} refresh={this.refresh} navigation={this.props.navigation}></MovieList>
       </SafeAreaView>
     );
   };

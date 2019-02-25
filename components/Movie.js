@@ -1,27 +1,32 @@
 import React, { Component } from 'react';
-import { View, Text, Image } from "react-native";
+import { TouchableOpacity , Text, Image } from "react-native";
+import sharedStyle from '../shared/style';
 
 type Props = {
-    Title: string,
-    Year: string,
-    imdbID: string,
-    Type: string,
-    Poster: string
+  Title: string,
+  Year: string,
+  imdbID: string,
+  Type: string,
+  Poster: string
 };
 type State = {};
 
 class Movie extends Component<Props, State> {
 
-    render() {
-        const { Title, Poster } = this.props;
+  _viewMovieDetails() {
+    this.props.navigation.navigate('MovieScreen', this.props);
+  };
 
-        return (
-            <View>
-                <Text>{Title}</Text>
-                <Image source={{ uri: Poster }} style={{width: 200, height: 200}} />    
-            </View>
-        );
-    }
+  render() {
+    const { Title, Poster } = this.props;
+
+    return (
+      <TouchableOpacity  onPress={this._viewMovieDetails.bind(this)} >
+        <Text style={sharedStyle.text}>{Title}</Text>
+        <Image source={{ uri: Poster }} style={sharedStyle.image} resizeMode={'stretch'} />  
+      </TouchableOpacity >
+    );
+  }
 }
 
 export default Movie;
