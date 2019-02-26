@@ -38,6 +38,7 @@ class MovieDetails extends Component<Props, State> {
     return (
       <SafeAreaView style={sharedStyle.container}>
         <Text style={sharedStyle.h3}>{props.Title}</Text>
+        <Text style={sharedStyle.text}>Year: {props.Year}</Text>
         <Text style={sharedStyle.text}>Released: {props.Released}</Text>
         <Text style={sharedStyle.text}>Runtime: {props.Runtime}</Text>
         <Text style={sharedStyle.text}>Genre: {props.Genre}</Text>

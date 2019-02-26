@@ -5,14 +5,19 @@ const apikey = '8acfc648';
 const endpoint = 'http://www.omdbapi.com/?apikey=' + apikey + '&s=*apple*';
 const fakeTimeout = 500;
 
-const fetchMovies = async (page, forceRefresh) => {
+const fetchMovies = async (options) => {
+
+  const { page, invalidateCache, selectedYear } = options;
 
   var currentEndpoint = endpoint;
   if (page) {
     currentEndpoint += '&page=' + page;
   }
+  if (selectedYear) {
+    currentEndpoint += '&y=' + selectedYear;  
+  }
 
-  if (forceRefresh) {
+  if (invalidateCache) {
     await AsyncStorage.clear(); 
   }
 
